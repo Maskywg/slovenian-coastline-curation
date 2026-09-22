@@ -320,19 +320,8 @@
                     <div id="map" class="w-full h-full z-10" style="min-height: 480px;"></div>
                     
                     <!-- Map Floating Info Badge -->
-                    <div class="absolute bottom-4 left-4 z-20 glass-card px-4 py-2 rounded-xl text-xs flex items-center gap-3 border border-habsburg-500/30">
-                        <div class="flex items-center gap-1.5">
-                            <span class="w-3 h-3 rounded-full bg-venetian-500 inline-block"></span>
-                            <span class="text-parchment-200" id="legend-venice">義大利/威尼斯勢力</span>
-                        </div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="w-3 h-3 rounded-full bg-habsburg-500 inline-block"></span>
-                            <span class="text-parchment-200" id="legend-habsburg">奧匈/神聖羅馬</span>
-                        </div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="w-3 h-3 rounded-full bg-adriatic-300 inline-block"></span>
-                            <span class="text-parchment-200" id="legend-slavic">南斯拉夫/斯洛維尼亞</span>
-                        </div>
+                    <div class="absolute bottom-4 left-4 z-20 glass-card px-4 py-2.5 rounded-xl text-xs flex flex-wrap items-center gap-3 border border-habsburg-500/40 shadow-2xl bg-slate-950/90" id="map-dynamic-legend">
+                        <!-- Populated dynamically via JS -->
                     </div>
                 </div>
 
@@ -632,105 +621,126 @@
         lucide.createIcons();
 
         // ----------------------------------------------------
-        // Era Data Configuration
+        // Era Data Configuration with Detailed Historical Polygons & Annotations
         // ----------------------------------------------------
         const eras = [
             {
                 years: "公元 500 – 1000 年",
                 tag: "ROMAN & BYZANTINE",
                 title: "羅馬崩潰與拜占庭海上前哨",
-                desc: "蠻族踏平內陸城市，羅馬遺民退守海灣孤島。拜占庭皇帝查士丁尼二世將科佩爾命名為 Justinopolis（查士丁尼之城），修築堅固要塞抵禦蠻族南下；內陸斯拉夫人開始在此定居。",
+                desc: "內陸羅馬城鎮遭蠻族摧毀，羅馬遺民退守海灣孤島。拜占庭皇帝查士丁尼二世將科佩爾命名為 Justinopolis（查士丁尼之城），修築堅固要塞抵禦蠻族南下；內陸斯拉夫人開始在此定居。",
                 bullets: [
-                    "科佩爾（Justinopolis）與皮蘭作為避難海島堡壘誕生",
-                    "拉丁海洋文明與內陸斯拉夫早期部落形成分水嶺"
+                    "🟡 沿海金黃色區：拜占庭帝國海上前哨（科佩爾、皮蘭、拉古納防線）",
+                    "🟢 內陸綠色區：早期斯拉夫人部落定居區（喀斯特高原與山林）",
+                    "⚔️ 羅曼海洋文明與內陸斯拉夫早期聚落形成地緣對峙"
                 ],
-                center: [45.548, 13.730],
+                center: [45.55, 13.72],
                 zoom: 11,
-                overlayType: "byzantine"
+                legend: [
+                    { name: "拜占庭海防堡壘區 (Justinopolis)", color: "#f59e0b" },
+                    { name: "早期斯拉夫聚落地帶", color: "#10b981" }
+                ]
             },
             {
                 years: "1283 – 1797 年",
                 tag: "VENETIAN EMPIRE",
-                title: "威尼斯海洋共和國的海鎖殖民",
-                desc: "威尼斯全面征服伊斯特利亞海岸，長達 500 年。壟斷塞喬夫列古法鹽田產量，嚴禁私賣給奧地利；軍管喀斯特橡木森林以供應威尼斯戰艦兵工廠，內陸哈布斯堡王朝被死死封鎖。",
+                title: "威尼斯帝國海鎖 vs 奧地利受困內陸",
+                desc: "威尼斯共和國全面征服伊斯特利亞海岸長達 500 年。壟斷塞喬夫列古法鹽田產量，嚴禁私賣給奧地利；軍管喀斯特橡木森林以供應威尼斯戰艦兵工廠，內陸哈布斯堡王朝被死死封鎖，無出海生路。",
                 bullets: [
-                    "皮蘭、科佩爾、伊佐拉全面威尼斯化（飛獅石雕與哥德宮殿）",
-                    "塞喬夫列 700 年 Petola 鹽田專利工法誕生，白金稅收支撐威尼斯",
-                    "奧地利哈布斯堡王朝受困內陸，零出海口"
+                    "🔴 沿海鮮紅區：威尼斯共和國海權殖民領地（皮蘭、科佩爾、伊佐拉全面軍管）",
+                    "🟡 內陸金色區：哈布斯堡公國（被威尼斯封鎖，無法出海）",
+                    "⚓ 塞喬夫列 700 年 Petola 鹽田產出白金，直運威尼斯充當國庫命脈"
                 ],
-                center: [45.525, 13.650],
+                center: [45.55, 13.72],
                 zoom: 11,
-                overlayType: "venice"
+                legend: [
+                    { name: "威尼斯海洋共和國 (全線封鎖)", color: "#dc2626" },
+                    { name: "奧地利哈布斯堡 (困於內陸)", color: "#d4af37" }
+                ]
             },
             {
                 years: "1797 – 1918 年",
                 tag: "AUSTRO-HUNGARIAN",
                 title: "奧匈帝國「海濱省」與海洋現代化",
-                desc: "拿破崙滅亡威尼斯後，哈布斯堡王朝將此地併入『奧地利海濱省』。維也納修建南方鐵路直達第里雅斯特與波爾托羅日，將這裡打造成全歐洲最繁華的自由港與貴族療養勝地。",
+                desc: "拿破崙滅亡威尼斯後，哈布斯堡王朝將此地統併為『奧地利海濱省（Küstenland）』。維也納修建南方鐵路直達第里雅斯特與波爾托羅日，將這裡打造成全歐洲最繁華的自由港與貴族療養勝地。",
                 bullets: [
-                    "第里雅斯特（Trieste）崛起為中歐最大自由港，維也納直通鐵路完工",
-                    "波爾托羅日（Portorož）興建 Palace Hotel，成為奧匈貴族度假天堂",
-                    "德語、義大利語、斯洛維尼亞語三語共存體系"
+                    "🟡 全境金色區：奧匈帝國海濱省（第里雅斯特為直轄帝國自由港）",
+                    "🚂 黑色鐵路動脈：維也納南方鐵路（Südbahn）直通大海",
+                    "🏨 玫瑰港（Portorož）興建皇宮大酒店，成為歐洲貴族避寒勝地"
                 ],
-                center: [45.580, 13.780],
+                center: [45.57, 13.75],
                 zoom: 11,
-                overlayType: "habsburg"
+                legend: [
+                    { name: "奧匈帝國海濱省 (全境統轄)", color: "#eab308" },
+                    { name: "維也納直通南方鐵路動脈", color: "#38bdf8" }
+                ]
             },
             {
                 years: "1920 – 1943 年",
                 tag: "FASCIST ITALY",
                 title: "義大利王國與強制義大利化",
-                desc: "一戰後奧匈帝國瓦解，《拉帕洛條約》將整個伊斯特利亞劃給義大利。墨索里尼法西斯政權展開殘酷的強制同化：禁止講斯洛維尼亞語、強改斯拉夫姓氏、鑿毀墓碑。",
+                desc: "一戰後奧匈瓦解，《拉帕洛條約》將整個伊斯特利亞劃給義大利。墨索里尼法西斯政權展開殘酷同化：禁止講斯洛維尼亞語、強改斯拉夫姓氏、鑿毀墓碑，引發地下游擊反抗（TIGR）。",
                 bullets: [
-                    "全面取締斯洛維尼亞語學校與報刊，激起地下抵抗運動（TIGR）",
-                    "地名與姓氏強制義大利化（Novak 改為 Novati）",
-                    "累積了二次大戰後激烈的種族報復火種"
+                    "🔴 全境深紅區：義大利王國茱莉亞威尼斯省（Venezia Giulia）",
+                    "🚫 斯洛維尼亞語學校與報刊全遭封禁，引發強烈民族衝突",
+                    "⚔️ 埋下二戰末期天坑屠殺（Foibe）的報復火種"
                 ],
-                center: [45.548, 13.730],
+                center: [45.55, 13.72],
                 zoom: 11,
-                overlayType: "italy"
+                legend: [
+                    { name: "義大利王國 (法西斯管轄)", color: "#b91c1c" }
+                ]
             },
             {
                 years: "1947 – 1954 年",
                 tag: "FREE TERRITORY OF TRIESTE",
                 title: "冷戰前哨：第里雅斯特自由區 A/B 分治",
-                desc: "二戰後天坑屠殺引發 30 萬義大利人大遷徙。聯合國設立自由區：A 區由英美軍管（第里雅斯特），B 區由南斯拉夫軍管（斯洛維尼亞 46 公里海岸）。1954 年倫敦備忘錄實質瓜分此地。",
+                desc: "二戰後天坑屠殺引發 30 萬義大利裔大遷徙。聯合國設立自由區：A 區由英美軍管（第里雅斯特），B 區由南斯拉夫軍管（斯洛維尼亞 46 公里海岸）。1954 年倫敦備忘錄實質瓜分此地。",
                 bullets: [
-                    "A 區（英美軍管）vs B 區（狄托南斯拉夫軍管）重兵對峙",
-                    "斯洛維尼亞由此獲得這 46.6 公里唯一的出海窗口",
-                    "Esodo 大遷徙：數十萬義裔居民攜家帶眷逃往義大利本土"
+                    "🔵 北部天藍區：A 區（英美盟軍軍管，首府第里雅斯特）",
+                    "🔴 南部赤紅區：B 區（南斯拉夫軍管，斯洛維尼亞由此獲 46.6km 出海口）",
+                    "⚡ 鐵幕前線：兩軍重兵沿摩根線（Morgan Line）對峙"
                 ],
-                center: [45.560, 13.710],
+                center: [45.58, 13.72],
                 zoom: 11,
-                overlayType: "ftt"
+                legend: [
+                    { name: "自由區 A 區 (英美軍管)", color: "#0284c7" },
+                    { name: "自由區 B 區 (南斯拉夫軍管)", color: "#dc2626" }
+                ]
             },
             {
                 years: "1975 – 現代",
                 tag: "OSIMO & SCHENGEN",
-                title: "《奧西莫條約》確立國界與申根融化",
-                desc: "1975 年義南簽訂《奧西莫條約》永久確立國界。1991 年斯洛維尼亞獨立，並於 2007 年拆除邊境檢查哨加入申根區。皮蘭灣海界與直通公海走廊成為兩國最後的法律角力場。",
+                title: "《奧西莫條約》確立國界與皮蘭灣海界",
+                desc: "1975 年義南簽訂《奧西莫條約》永久確立國界。1991 年斯洛維尼亞獨立，並於 2007 年拆除邊境檢查哨加入申根區。科佩爾港成為中歐無海國家的生命線，而皮蘭灣公海走廊成為現代爭端焦點。",
                 bullets: [
-                    "科佩爾港躍升為中歐無海國家（奧地利/匈牙利/捷克）最重要的第一大港",
-                    "三市鎮（科佩爾/皮蘭/伊佐拉）實施全面憲法級義斯雙語制度",
-                    "皮蘭灣國際常設仲裁法庭裁決與跨國漁業爭端"
+                    "🟢 綠色區：斯洛維尼亞海岸線（科佩爾港吞吐中歐 2000 萬噸貨物）",
+                    "🔵 藍色區：義大利共和國（第里雅斯特）",
+                    "🟠 橙色區：克羅埃西亞（伊斯特利亞半島）",
+                    "🌊 虛線走廊：海牙常設仲裁法院（PCA）裁定之斯國直通公海走廊"
                 ],
-                center: [45.525, 13.600],
+                center: [45.53, 13.63],
                 zoom: 11,
-                overlayType: "modern"
+                legend: [
+                    { name: "斯洛維尼亞 (46.6km海岸/雙語區)", color: "#10b981" },
+                    { name: "義大利 (第里雅斯特)", color: "#0284c7" },
+                    { name: "克羅埃西亞 (伊斯特利亞)", color: "#f97316" },
+                    { name: "皮蘭灣公海接合走廊", color: "#a855f7" }
+                ]
             }
         ];
 
         // ----------------------------------------------------
-        // Leaflet Map Initialization
+        // Leaflet Map Initialization (Reliable Clear Basemap)
         // ----------------------------------------------------
         const map = L.map('map', {
             zoomControl: true,
             scrollWheelZoom: false
-        }).setView([45.548, 13.730], 11);
+        }).setView([45.55, 13.72], 11);
 
-        // Dark-themed OpenStreetMap tiles (CartoDB DarkMatter)
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
+        // Standard, high-contrast, crystal-clear OpenStreetMap basemap without API key limitations
+        const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 18
         }).addTo(map);
 
@@ -740,13 +750,13 @@
                 name: "科佩爾 (Koper / Capodistria)",
                 coords: [45.5481, 13.7302],
                 tag: "拜占庭堡壘 • 威尼斯總督宮 • 斯國唯一深水港",
-                desc: "古名 Justinopolis。威尼斯時代為伊斯特利亞首府，設有總督宮（Pretorian Palace）。今日為斯洛維尼亞對外吞吐 2000 萬噸貨物的國脈心臟。"
+                desc: "古名 Justinopolis。威尼斯時代為伊斯特利亞首府，設有總督宮。今日為斯洛維尼亞對外吞吐 2000 萬噸貨物的國脈心臟。"
             },
             {
                 name: "皮蘭 (Piran / Pirano)",
                 coords: [45.5283, 13.5684],
                 tag: "水上小威尼斯 • 聖馬可飛獅 • 塔蒂尼廣場",
-                desc: "三面環海的中世紀奇蹟。全鎮完整保留威尼斯哥德式建築，以小提琴大師塔蒂尼命名廣場，鐘樓為威尼斯聖馬可鐘樓的縮小復刻版。"
+                desc: "三面環海的中世紀奇蹟。全鎮完整保留威尼斯哥德式建築，鐘樓為威尼斯聖馬可鐘樓的縮小復刻版。"
             },
             {
                 name: "伊佐拉 (Izola / Isola)",
@@ -764,7 +774,7 @@
                 name: "塞喬夫列鹽田 (Sečovlje Salina)",
                 coords: [45.4858, 13.6062],
                 tag: "700年古法 Petola 泥層 • 威尼斯白金稅源 • 濕地生態",
-                desc: "歐洲最古老仍在運作的手工日曬鹽田之一。特殊的微藻生化保護層產出極度純淨的鹽之花，曾是威尼斯共和國重點軍管的戰略物資。"
+                desc: "歐洲最古老的手工日曬鹽田之一。特殊的微藻生化泥層產出極度純淨的鹽之花，曾是威尼斯共和國重點軍管的戰略物資。"
             },
             {
                 name: "第里雅斯特 (Trieste / Trst)",
@@ -777,13 +787,20 @@
         // Layer group for markers & polygons
         let activeLayers = L.layerGroup().addTo(map);
 
-        // Custom Marker Icon
-        const createCustomIcon = (color) => {
+        // Custom Marker Icon with Badge
+        const createCustomIcon = (color, name) => {
             return L.divIcon({
                 className: 'custom-div-icon',
-                html: `<div style="background-color: ${color}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #f5f0e6; box-shadow: 0 0 10px ${color};"></div>`,
-                iconSize: [14, 14],
-                iconAnchor: [7, 7]
+                html: `
+                    <div style="position: relative; display: flex; align-items: center; justify-content: center;">
+                        <div style="background-color: ${color}; width: 16px; height: 16px; border-radius: 50%; border: 2.5px solid #ffffff; box-shadow: 0 0 10px rgba(0,0,0,0.8);"></div>
+                        <div style="position: absolute; top: 18px; white-space: nowrap; background: rgba(7, 28, 38, 0.9); color: #ffffff; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid ${color}; box-shadow: 0 2px 6px rgba(0,0,0,0.6); pointer-events: none;">
+                            ${name.split(' ')[0]}
+                        </div>
+                    </div>
+                `,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
             });
         };
 
@@ -791,18 +808,128 @@
             activeLayers.clearLayers();
             const era = eras[index];
 
-            // Render Markers
+            // 1. Render Comprehensive Territory Polygons for Each Era
+            if (index === 0) { // 500-1000 拜占庭海防 vs 斯拉夫內陸
+                // Byzantine coastal forts (Koper, Piran, Izola coastal strip)
+                const byzantineTerritory = L.polygon([
+                    [45.66, 13.75], [45.57, 13.74], [45.54, 13.68], [45.52, 13.54], 
+                    [45.47, 13.56], [45.46, 13.63], [45.53, 13.77], [45.62, 13.80]
+                ], { color: '#f59e0b', weight: 3, fillColor: '#f59e0b', fillOpacity: 0.35 })
+                .bindTooltip("<b>拜占庭帝國海上防線 (Justinopolis / Piran)</b>", { permanent: true, direction: "center", className: "bg-slate-900/90 text-amber-300 px-2 py-1 rounded text-xs border border-amber-500 font-bold" });
+                activeLayers.addLayer(byzantineTerritory);
+
+                // Slavic inland hinterland
+                const slavicHinterland = L.polygon([
+                    [45.72, 13.80], [45.65, 14.05], [45.45, 14.00], [45.48, 13.78], [45.62, 13.82]
+                ], { color: '#10b981', weight: 2, dashArray: '5,5', fillColor: '#10b981', fillOpacity: 0.25 })
+                .bindTooltip("<b>早期斯拉夫部落聚落區 (喀斯特山林)</b>", { permanent: true, direction: "center", className: "bg-slate-900/90 text-emerald-300 px-2 py-1 rounded text-xs border border-emerald-500 font-bold" });
+                activeLayers.addLayer(slavicHinterland);
+
+            } else if (index === 1) { // 1283-1797 威尼斯帝國海鎖
+                // Venetian Coastline & Istria (Strong Red)
+                const venetianCoast = L.polygon([
+                    [45.62, 13.76], [45.56, 13.74], [45.54, 13.65], [45.52, 13.54],
+                    [45.44, 13.52], [45.40, 13.65], [45.42, 13.80], [45.53, 13.78], [45.58, 13.82]
+                ], { color: '#dc2626', weight: 3, fillColor: '#dc2626', fillOpacity: 0.4 })
+                .bindTooltip("<b>威尼斯海洋共和國 (全線海鎖統治區)</b>", { permanent: true, direction: "center", className: "bg-slate-900/90 text-red-300 px-2 py-1 rounded text-xs border border-red-500 font-bold" });
+                activeLayers.addLayer(venetianCoast);
+
+                // Habsburg Inland Choke Point (Gold)
+                const habsburgInland = L.polygon([
+                    [45.75, 13.70], [45.75, 14.05], [45.45, 14.05], [45.45, 13.82], [45.65, 13.82], [45.67, 13.76]
+                ], { color: '#d4af37', weight: 2, fillColor: '#d4af37', fillOpacity: 0.3 })
+                .bindTooltip("<b>奧地利哈布斯堡王朝 (困於內陸・無出海口)</b>", { permanent: true, direction: "center", className: "bg-slate-900/90 text-amber-200 px-2 py-1 rounded text-xs border border-amber-500 font-bold" });
+                activeLayers.addLayer(habsburgInland);
+
+            } else if (index === 2) { // 1797-1918 奧匈帝國海濱省
+                // Entire Austrian Littoral (Gold)
+                const austrianLittoral = L.polygon([
+                    [45.75, 13.65], [45.75, 14.05], [45.40, 14.05], [45.40, 13.50], [45.55, 13.52], [45.66, 13.75]
+                ], { color: '#eab308', weight: 3, fillColor: '#eab308', fillOpacity: 0.35 })
+                .bindTooltip("<b>奧匈帝國・海濱省 (Österreichisches Küstenland)</b>", { permanent: true, direction: "center", className: "bg-slate-900/90 text-yellow-300 px-2 py-1 rounded text-xs border border-yellow-500 font-bold" });
+                activeLayers.addLayer(austrianLittoral);
+
+                // Vienna Southern Railway (Südbahn) Polyline
+                const railwayLine = L.polyline([
+                    [45.75, 13.90], [45.68, 13.82], [45.65, 13.78], [45.58, 13.74], [45.52, 13.60]
+                ], { color: '#38bdf8', weight: 4, dashArray: '6, 6' })
+                .bindTooltip("<b>🚂 維也納南方鐵路動脈 (Südbahn)</b>", { permanent: true, direction: "right", className: "bg-slate-900/90 text-sky-300 px-2 py-1 rounded text-xs border border-sky-400 font-bold" });
+                activeLayers.addLayer(railwayLine);
+
+            } else if (index === 3) { // 1920-1943 義大利法西斯
+                // Italian Kingdom Venezia Giulia
+                const italianAnnex = L.polygon([
+                    [45.75, 13.65], [45.75, 14.05], [45.40, 14.05], [45.40, 13.50], [45.55, 13.52], [45.66, 13.75]
+                ], { color: '#b91c1c', weight: 3, fillColor: '#b91c1c', fillOpacity: 0.4 })
+                .bindTooltip("<b>義大利王國・茱莉亞威尼斯省 (強制同化區)</b>", { permanent: true, direction: "center", className: "bg-slate-900/90 text-red-200 px-2 py-1 rounded text-xs border border-red-600 font-bold" });
+                activeLayers.addLayer(italianAnnex);
+
+            } else if (index === 4) { // 1947-1954 冷戰自由區 A & B
+                // Zone A (Trieste - Anglo-American Military Government)
+                const zoneA = L.polygon([
+                    [45.76, 13.60], [45.75, 13.85], [45.63, 13.88], [45.58, 13.78], [45.60, 13.72], [45.68, 13.70]
+                ], { color: '#0284c7', weight: 3, fillColor: '#0284c7', fillOpacity: 0.45 })
+                .bindTooltip("<b>第里雅斯特自由區 • A 區 (英美軍管)</b>", { permanent: true, direction: "center", className: "bg-slate-900/90 text-sky-200 px-2 py-1 rounded text-xs border border-sky-500 font-bold" });
+                activeLayers.addLayer(zoneA);
+
+                // Zone B (Koper/Piran/Istria - Yugoslav Military Administration)
+                const zoneB = L.polygon([
+                    [45.58, 13.78], [45.63, 13.88], [45.45, 13.90], [45.40, 13.50], [45.52, 13.52], [45.56, 13.73]
+                ], { color: '#dc2626', weight: 3, fillColor: '#dc2626', fillOpacity: 0.45 })
+                .bindTooltip("<b>第里雅斯特自由區 • B 區 (南斯拉夫軍管・斯國出海口)</b>", { permanent: true, direction: "center", className: "bg-slate-900/90 text-red-200 px-2 py-1 rounded text-xs border border-red-500 font-bold" });
+                activeLayers.addLayer(zoneB);
+
+                // Morgan Line Border
+                const morganLine = L.polyline([
+                    [45.60, 13.72], [45.58, 13.78], [45.63, 13.88]
+                ], { color: '#fbbf24', weight: 5, dashArray: '8, 8' })
+                .bindTooltip("<b>⚡ 摩根分界線 (Morgan Line)</b>", { permanent: true, direction: "top", className: "bg-slate-900 text-yellow-300 text-xs font-mono font-bold" });
+                activeLayers.addLayer(morganLine);
+
+            } else if (index === 5) { // 1975-現代 奧西莫條約與現代三國
+                // Italy (Trieste)
+                const italyModern = L.polygon([
+                    [45.76, 13.60], [45.75, 13.85], [45.63, 13.88], [45.58, 13.78], [45.60, 13.72]
+                ], { color: '#0284c7', weight: 2, fillColor: '#0284c7', fillOpacity: 0.35 })
+                .bindTooltip("<b>義大利共和國 (第里雅斯特)</b>", { permanent: true, direction: "center", className: "bg-slate-900/90 text-sky-200 px-2 py-1 rounded text-xs border border-sky-400 font-bold" });
+                activeLayers.addLayer(italyModern);
+
+                // Slovenia (46.6km Coastline)
+                const sloveniaModern = L.polygon([
+                    [45.58, 13.78], [45.63, 13.88], [45.52, 13.90], [45.47, 13.65], [45.52, 13.53], [45.56, 13.73]
+                ], { color: '#10b981', weight: 3, fillColor: '#10b981', fillOpacity: 0.45 })
+                .bindTooltip("<b>🇸🇮 斯洛維尼亞 (46.6km 唯一海洋生命線)</b>", { permanent: true, direction: "center", className: "bg-slate-900/90 text-emerald-200 px-2 py-1 rounded text-xs border border-emerald-400 font-bold" });
+                activeLayers.addLayer(sloveniaModern);
+
+                // Croatia (Istria)
+                const croatiaModern = L.polygon([
+                    [45.47, 13.65], [45.52, 13.90], [45.40, 13.90], [45.40, 13.50], [45.47, 13.54]
+                ], { color: '#f97316', weight: 2, fillColor: '#f97316', fillOpacity: 0.35 })
+                .bindTooltip("<b>🇭🇷 克羅埃西亞 (伊斯特利亞省)</b>", { permanent: true, direction: "center", className: "bg-slate-900/90 text-orange-200 px-2 py-1 rounded text-xs border border-orange-400 font-bold" });
+                activeLayers.addLayer(croatiaModern);
+
+                // Piran Bay Junction Corridor
+                const piranCorridor = L.polygon([
+                    [45.51, 13.55], [45.54, 13.44], [45.58, 13.43], [45.55, 13.57]
+                ], { color: '#a855f7', weight: 3, dashArray: '5, 5', fillColor: '#a855f7', fillOpacity: 0.4 })
+                .bindTooltip("<b>🌊 皮蘭灣直通公海走廊 (PCA 國際仲裁裁定)</b>", { permanent: true, direction: "center", className: "bg-slate-900/90 text-purple-200 px-2 py-1 rounded text-xs border border-purple-400 font-bold" });
+                activeLayers.addLayer(piranCorridor);
+            }
+
+            // 2. Render Markers with specific dynamic colors
             landmarks.forEach(lm => {
                 let color = '#d4af37';
-                if (index === 1) color = '#b83b26'; // Venice Red
-                if (index === 2) color = '#d4af37'; // Habsburg Gold
-                if (index === 4) color = '#237a9b'; // Cold war Blue
-                if (index === 5) color = '#10b981'; // Modern Green
+                if (index === 0) color = '#f59e0b';
+                if (index === 1) color = '#dc2626';
+                if (index === 2) color = '#eab308';
+                if (index === 3) color = '#b91c1c';
+                if (index === 4) color = (lm.name.includes("第里雅斯特") ? '#0284c7' : '#dc2626');
+                if (index === 5) color = (lm.name.includes("第里雅斯特") ? '#0284c7' : '#10b981');
 
-                const marker = L.marker(lm.coords, { icon: createCustomIcon(color) });
+                const marker = L.marker(lm.coords, { icon: createCustomIcon(color, lm.name) });
                 marker.bindPopup(`
-                    <div class="p-2 space-y-1">
-                        <span class="text-xs font-mono text-habsburg-500 font-bold uppercase">${lm.tag}</span>
+                    <div class="p-2 space-y-1.5" style="max-width: 240px;">
+                        <span class="text-[11px] font-mono text-habsburg-500 font-bold block">${lm.tag}</span>
                         <h5 class="text-base font-bold font-title text-parchment-100">${lm.name}</h5>
                         <p class="text-xs text-parchment-300 font-serif leading-relaxed">${lm.desc}</p>
                     </div>
@@ -810,28 +937,18 @@
                 activeLayers.addLayer(marker);
             });
 
-            // Era Specific Overlays (Illustrative border polygons)
-            if (index === 4) { // Cold War FTT A & B zones
-                // Zone A (Trieste - Anglo-American)
-                const zoneA = L.polygon([
-                    [45.68, 13.70], [45.65, 13.84], [45.58, 13.80], [45.59, 13.72]
-                ], { color: '#38bdf8', weight: 2, fillColor: '#38bdf8', fillOpacity: 0.25 }).bindTooltip("第里雅斯特自由區 • A 區 (英美軍管)", { permanent: true, direction: "center", className: "bg-transparent text-sky-300 text-xs font-mono border-0" });
-                
-                // Zone B (Koper/Piran/Istria - Yugoslav)
-                const zoneB = L.polygon([
-                    [45.59, 13.72], [45.58, 13.80], [45.45, 13.75], [45.44, 13.50], [45.53, 13.54]
-                ], { color: '#ef4444', weight: 2, fillColor: '#ef4444', fillOpacity: 0.25 }).bindTooltip("第里雅斯特自由區 • B 區 (南斯拉夫軍管)", { permanent: true, direction: "center", className: "bg-transparent text-red-300 text-xs font-mono border-0" });
-
-                activeLayers.addLayer(zoneA);
-                activeLayers.addLayer(zoneB);
-            } else if (index === 5) { // Modern Piran Bay Corridor
-                const piranCorridor = L.polygon([
-                    [45.51, 13.55], [45.53, 13.48], [45.57, 13.46], [45.55, 13.57]
-                ], { color: '#10b981', weight: 2, dashArray: '4, 4', fillColor: '#10b981', fillOpacity: 0.2 }).bindTooltip("皮蘭灣公海接合走廊 (PCA 裁定)", { permanent: true, direction: "center", className: "bg-transparent text-emerald-300 text-xs font-mono border-0" });
-                activeLayers.addLayer(piranCorridor);
+            // Update Floating Dynamic Legend Badge
+            const legendContainer = document.getElementById('map-dynamic-legend');
+            if (legendContainer && era.legend) {
+                legendContainer.innerHTML = era.legend.map(item => `
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3.5 h-3.5 rounded-full inline-block border border-white/60 shrink-0" style="background-color: ${item.color};"></span>
+                        <span class="text-white font-medium text-xs">${item.name}</span>
+                    </div>
+                `).join('');
             }
 
-            map.flyTo(era.center, era.zoom, { duration: 1.2 });
+            map.flyTo(era.center, era.zoom, { duration: 1.0 });
         }
 
         function switchEra(index) {
