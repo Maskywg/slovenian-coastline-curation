@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邊界在這裡撕裂了土地，歷史在這裡堆疊了傷口 | 極東義大利與斯洛維尼亞海岸線數位策展</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        adriatic: {
+                            50: '#f0f7fa',
+                            100: '#dbeef4',
+                            300: '#90cbdf',
+                            600: '#237a9b',
+                            800: '#144c63',
+                            900: '#0c2e3d',
+                            950: '#071c26',
+                        },
+                        venetian: {
+                            500: '#b83b26',
+                            700: '#8a2414',
+                            900: '#521309',
+                        },
+                        habsburg: {
+                            500: '#d4af37',
+                            700: '#9b7e1e',
+                            900: '#5e4b0f',
+                        },
+                        parchment: {
+                            100: '#fbf9f4',
+                            200: '#f5f0e6',
+                            300: '#ebe1ce',
+                            400: '#dfd0b5',
+                            800: '#4a3f35',
+                            900: '#2c251f',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif TC"', '"Songti TC"', 'Georgia', 'serif'],
+                        sans: ['"PingFang TC"', '"Noto Sans TC"', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+TC:wght@300;400;600;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet.js -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #071c26;
+            color: #ebe1ce;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, .font-title {
+            font-family: 'Noto Serif TC', serif;
+        }
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c2e3d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #237a9b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #90cbdf;
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(12, 46, 61, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(144, 203, 223, 0.18);
+        }
+        .glass-card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card-hover:hover {
+            transform: translateY(-4px);
+            border-color: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Leaflet custom styling */
+        .leaflet-popup-content-wrapper {
+            background: #0c2e3d !important;
+            color: #f5f0e6 !important;
+            border: 1px solid #d4af37 !important;
+            border-radius: 8px !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6) !important;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .leaflet-popup-tip {
+            background: #0c2e3d !important;
+            border: 1px solid #d4af37 !important;
+        }
+        
+        /* Animated gradient background */
+        .hero-glow {
+            background: radial-gradient(circle at 50% 35%, rgba(35, 122, 155, 0.35) 0%, rgba(7, 28, 38, 0.95) 75%);
+        }
+
+        /* Text glow effect */
+        .text-glow {
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
+        }
+    </style>
+</head>
+<body class="selection:bg-venetian-500 selection:text-white">
+
+    <!-- Top Navigation -->
+    <header class="fixed top-0 left-0 w-full z-50 glass-card border-b border-adriatic-600/30 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full border border-habsburg-500/60 flex items-center justify-center bg-adriatic-900 text-habsburg-500">
+                    <i data-lucide="compass" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="font-cinzel text-xs tracking-widest text-habsburg-500 block">CAPUT ADRIAE</span>
+                    <span class="font-title text-sm font-semibold tracking-wider text-parchment-200">極東義大利 × 斯洛維尼亞海岸線</span>
+                </div>
+            </div>
+            
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-parchment-300">
+                <a href="#intro" class="hover:text-habsburg-500 transition-colors">序章：重寫本</a>
+                <a href="#timeline-map" class="hover:text-habsburg-500 transition-colors flex items-center gap-1">
+                    <i data-lucide="map" class="w-4 h-4"></i> 時空流變地圖
+                </a>
+                <a href="#power-chart" class="hover:text-habsburg-500 transition-colors flex items-center gap-1">
+                    <i data-lucide="activity" class="w-4 h-4"></i> 勢力消長圖
+                </a>
+                <a href="#chapters" class="hover:text-habsburg-500 transition-colors">歷史斷層</a>
+                <a href="#voices" class="hover:text-habsburg-500 transition-colors">靈魂檔案</a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <button id="ambient-audio-btn" class="px-3 py-1.5 rounded-full text-xs border border-adriatic-300/30 hover:border-habsburg-500 text-parchment-200 flex items-center gap-1.5 transition-all bg-adriatic-950/60">
+                    <i data-lucide="waves" class="w-3.5 h-3.5 text-adriatic-300" id="audio-icon"></i>
+                    <span id="audio-status">海潮氛圍音</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 pb-16 px-4 hero-glow overflow-hidden">
+        <!-- Ambient Decorative Particles -->
+        <div class="absolute inset-0 pointer-events-none opacity-20">
+            <div class="absolute top-1/4 left-10 w-96 h-96 bg-adriatic-600 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-venetian-700 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-habsburg-500/40 bg-habsburg-900/20 text-habsburg-500 text-xs font-cinzel tracking-widest uppercase mb-8">
+                <i data-lucide="landmark" class="w-3.5 h-3.5"></i>
+                Trieste • Koper • Piran • Istria
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-parchment-100 leading-tight md:leading-snug mb-8 font-title text-glow">
+                邊界在這裡撕裂了土地，<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-habsburg-500 via-parchment-200 to-adriatic-300">歷史在這裡堆疊了傷口。</span>
+            </h1>
+
+            <p class="text-lg md:text-xl text-parchment-300 font-serif max-w-3xl mx-auto leading-relaxed mb-10 opacity-90">
+                在全長僅 46.6 公里的海岸線上，羅曼海洋、斯拉夫山嶽與奧地利日耳曼帝國在此死鎖。<br class="hidden sm:inline">
+                同一張羊皮紙被刮淨了三次、重寫了四次，但海風把所有死敵縫進了同一個靈魂。
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#timeline-map" class="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-gradient-to-r from-venetian-700 to-venetian-500 hover:from-venetian-500 hover:to-venetian-700 text-white font-medium shadow-lg shadow-venetian-900/50 flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5">
+                    <i data-lucide="compass" class="w-5 h-5"></i>
+                    進入時空流變地圖
+                </a>
+                <a href="#power-chart" class="w-full sm:w-auto px-8 py-3.5 rounded-lg glass-card border border-adriatic-300/30 hover:border-habsburg-500 text-parchment-200 font-medium flex items-center justify-center gap-2 transition-all">
+                    <i data-lucide="activity" class="w-5 h-5 text-habsburg-500"></i>
+                    綜觀千年勢力消長
+                </a>
+            </div>
+
+            <!-- Four Passports Quote Banner -->
+            <div class="mt-16 glass-card p-6 rounded-2xl max-w-2xl mx-auto text-left border-l-4 border-habsburg-500">
+                <div class="flex items-start gap-4">
+                    <div class="p-2 rounded-lg bg-adriatic-900/80 text-habsburg-500 shrink-0">
+                        <i data-lucide="quote" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm md:text-base font-serif italic text-parchment-200 leading-relaxed">
+                            「出生在奧匈帝國，童年在義大利王國上學，中年為南斯拉夫工作，晚年在斯洛維尼亞或克羅埃西亞養老——但客廳窗戶，永遠望著同一片亞得里亞海。」
+                        </p>
+                        <span class="text-xs text-adriatic-300 font-mono mt-2 block">— 伊斯特利亞老人的真實一生（1910–2000）</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: Intro Concept -->
+    <section id="intro" class="py-20 px-4 max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-xs font-cinzel tracking-widest text-habsburg-500 uppercase mb-2">PALIMPSEST OF CIVILIZATIONS</h2>
+            <h3 class="text-3xl md:text-4xl font-bold font-title text-parchment-100">三大文明的隱沒帶：四個重疊的靈魂</h3>
+            <div class="w-16 h-1 bg-habsburg-500 mx-auto mt-4 rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="glass-card p-8 rounded-2xl glass-card-hover border-t-2 border-venetian-500">
+                <div class="w-12 h-12 rounded-xl bg-venetian-900/60 border border-venetian-500/40 text-venetian-500 flex items-center justify-center mb-6">
+                    <i data-lucide="anchor" class="w-6 h-6"></i>
+                </div>
+                <h4 class="text-xl font-bold font-title text-parchment-100 mb-2">羅曼海權：威尼斯骨架</h4>
+                <p class="text-xs font-cinzel text-adriatic-300 mb-4">REPUBLIC OF VENICE (1283–1797)</p>
+                <p class="text-sm text-parchment-300 font-serif leading-relaxed">
+                    給了這條海岸線完整的肉身——紅瓦屋頂、哥德式雙聯窗、聖馬可飛獅雕像，以及 700 年不曾熄火的塞喬夫列古法鹽田。義大利語在此化為波浪般的威尼斯方言。
+                </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="glass-card p-8 rounded-2xl glass-card-hover border-t-2 border-habsburg-500">
+                <div class="w-12 h-12 rounded-xl bg-habsburg-900/60 border border-habsburg-500/40 text-habsburg-500 flex items-center justify-center mb-6">
+                    <i data-lucide="crown" class="w-6 h-6"></i>
+                </div>
+                <h4 class="text-xl font-bold font-title text-parchment-100 mb-2">中歐陸權：奧匈現代化</h4>
+                <p class="text-xs font-cinzel text-adriatic-300 mb-4">HABSBURG EMPIRE (1797–1918)</p>
+                <p class="text-sm text-parchment-300 font-serif leading-relaxed">
+                    內陸帝國為大海注入野心。鋪設通往維也納的南方鐵路，打造第里雅斯特自由港，並在波爾托羅日（玫瑰港）為歐洲王公貴族修築富麗堂皇的溫泉浴場與賭場。
+                </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="glass-card p-8 rounded-2xl glass-card-hover border-t-2 border-adriatic-300">
+                <div class="w-12 h-12 rounded-xl bg-adriatic-900/60 border border-adriatic-300/40 text-adriatic-300 flex items-center justify-center mb-6">
+                    <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                </div>
+                <h4 class="text-xl font-bold font-title text-parchment-100 mb-2">斯拉夫韌性：南斯拉夫與冷戰</h4>
+                <p class="text-xs font-cinzel text-adriatic-300 mb-4">COLD WAR & YUGOSLAVIA (1945–1991)</p>
+                <p class="text-sm text-parchment-300 font-serif leading-relaxed">
+                    在經歷法西斯同化與天坑屠殺的血淚洗禮後，斯洛維尼亞硬是在懸崖與沼澤間開闢了科佩爾深水港，保住了中歐通往世界的 46.6 公里海洋走廊。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Interactive Historical Timeline Map -->
+    <section id="timeline-map" class="py-20 px-4 bg-adriatic-950/80 border-y border-adriatic-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-adriatic-900 border border-adriatic-600/40 text-habsburg-500 text-xs font-cinzel mb-2">
+                        <i data-lucide="layers" class="w-3.5 h-3.5"></i> CARTOGRAPHIC TRANSFORMATION
+                    </div>
+                    <h3 class="text-3xl md:text-4xl font-bold font-title text-parchment-100">時空流變地圖：46.6公里的國界變遷</h3>
+                </div>
+                <p class="text-sm text-parchment-300 font-serif max-w-md">
+                    點選下方時代按鈕，觀察這片亞得里亞海角如何在六個歷史紀元中反覆被割裂、重組與劃界。
+                </p>
+            </div>
+
+            <!-- Era Timeline Buttons -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mb-6">
+                <button onclick="switchEra(0)" id="era-btn-0" class="era-btn p-3 rounded-xl border text-left transition-all bg-adriatic-900/90 border-habsburg-500 text-habsburg-500 shadow-lg">
+                    <span class="text-xs font-mono block opacity-75">500–1000</span>
+                    <span class="text-xs font-bold font-title block mt-1">羅馬與拜占庭防線</span>
+                </button>
+                <button onclick="switchEra(1)" id="era-btn-1" class="era-btn p-3 rounded-xl border text-left transition-all bg-adriatic-900/40 border-adriatic-800 hover:border-adriatic-300 text-parchment-300">
+                    <span class="text-xs font-mono block opacity-75">1283–1797</span>
+                    <span class="text-xs font-bold font-title block mt-1">威尼斯帝國海鎖</span>
+                </button>
+                <button onclick="switchEra(2)" id="era-btn-2" class="era-btn p-3 rounded-xl border text-left transition-all bg-adriatic-900/40 border-adriatic-800 hover:border-adriatic-300 text-parchment-300">
+                    <span class="text-xs font-mono block opacity-75">1797–1918</span>
+                    <span class="text-xs font-bold font-title block mt-1">奧匈帝國海濱省</span>
+                </button>
+                <button onclick="switchEra(3)" id="era-btn-3" class="era-btn p-3 rounded-xl border text-left transition-all bg-adriatic-900/40 border-adriatic-800 hover:border-adriatic-300 text-parchment-300">
+                    <span class="text-xs font-mono block opacity-75">1920–1943</span>
+                    <span class="text-xs font-bold font-title block mt-1">法西斯義大利吞併</span>
+                </button>
+                <button onclick="switchEra(4)" id="era-btn-4" class="era-btn p-3 rounded-xl border text-left transition-all bg-adriatic-900/40 border-adriatic-800 hover:border-adriatic-300 text-parchment-300">
+                    <span class="text-xs font-mono block opacity-75">1947–1954</span>
+                    <span class="text-xs font-bold font-title block mt-1">冷戰自由區 A/B 分治</span>
+                </button>
+                <button onclick="switchEra(5)" id="era-btn-5" class="era-btn p-3 rounded-xl border text-left transition-all bg-adriatic-900/40 border-adriatic-800 hover:border-adriatic-300 text-parchment-300">
+                    <span class="text-xs font-mono block opacity-75">1975–現代</span>
+                    <span class="text-xs font-bold font-title block mt-1">奧西莫條約與歐盟</span>
+                </button>
+            </div>
+
+            <!-- Map & Era Description Container -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                <!-- Map (8 cols) -->
+                <div class="lg:col-span-8 rounded-2xl overflow-hidden glass-card relative min-h-[480px] lg:min-h-[580px]">
+                    <div id="map" class="w-full h-full z-10" style="min-height: 480px;"></div>
+                    
+                    <!-- Map Floating Info Badge -->
+                    <div class="absolute bottom-4 left-4 z-20 glass-card px-4 py-2 rounded-xl text-xs flex items-center gap-3 border border-habsburg-500/30">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-venetian-500 inline-block"></span>
+                            <span class="text-parchment-200" id="legend-venice">義大利/威尼斯勢力</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-habsburg-500 inline-block"></span>
+                            <span class="text-parchment-200" id="legend-habsburg">奧匈/神聖羅馬</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-adriatic-300 inline-block"></span>
+                            <span class="text-parchment-200" id="legend-slavic">南斯拉夫/斯洛維尼亞</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Era Explanatory Card (4 cols) -->
+                <div class="lg:col-span-4 glass-card p-6 rounded-2xl flex flex-col justify-between border-l-2 border-habsburg-500">
+                    <div>
+                        <div class="flex items-center justify-between pb-4 border-b border-adriatic-800">
+                            <span class="text-xs font-mono text-habsburg-500 font-bold" id="era-card-years">公元 500 – 1000 年</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-cinzel bg-adriatic-900 text-adriatic-300" id="era-card-tag">ANTIQUITY</span>
+                        </div>
+
+                        <h4 class="text-2xl font-bold font-title text-parchment-100 mt-4 mb-3" id="era-card-title">
+                            羅馬崩潰與拜占庭海上前哨
+                        </h4>
+
+                        <p class="text-sm font-serif text-parchment-300 leading-relaxed space-y-3" id="era-card-desc">
+                            當匈人阿提拉與倫巴底蠻族踏平內陸城市時，羅馬遺民退守海灣孤島。拜占庭皇帝查士丁尼二世將科佩爾命名為 <em>Justinopolis</em>（查士丁尼之城），在此修築城牆，成為抗擊蠻族入侵的海上哨站。
+                        </p>
+
+                        <div class="mt-6 pt-4 border-t border-adriatic-800">
+                            <h5 class="text-xs font-cinzel text-habsburg-500 tracking-wider uppercase mb-2">時代地緣特徵 (KEY GEOPOLITICAL DYNAMICS)</h5>
+                            <ul class="text-xs text-parchment-300 space-y-1.5" id="era-card-bullets">
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="check" class="w-3.5 h-3.5 text-habsburg-500"></i>
+                                    <span>科佩爾與皮蘭作為避難海島堡壘誕生</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="check" class="w-3.5 h-3.5 text-habsburg-500"></i>
+                                    <span>內陸斯拉夫人開始遷徙定居喀斯特高原</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-3 rounded-xl bg-adriatic-900/60 border border-adriatic-800 text-xs text-adriatic-300 flex items-center gap-2">
+                        <i data-lucide="info" class="w-4 h-4 shrink-0 text-habsburg-500"></i>
+                        <span>在地圖上點擊標記點（Marker）可檢視該城鎮在當時代的具體角色。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Power Dynamics & Ebb-and-Flow Chart -->
+    <section id="power-chart" class="py-20 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-adriatic-900 border border-habsburg-500/40 text-habsburg-500 text-xs font-cinzel mb-2">
+                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> HISTORICAL DYNAMICS & HEGEMONY
+            </div>
+            <h3 class="text-3xl md:text-4xl font-bold font-title text-parchment-100">千年勢力消長示意圖</h3>
+            <p class="text-sm font-serif text-parchment-300 max-w-2xl mx-auto mt-2">
+                以沉積岩層的視角，檢視五大帝國力量（羅馬拜占庭、威尼斯海權、奧地利哈布斯堡、義大利國族、南斯拉夫/斯洛維尼亞）在亞得里亞海角的主導權演變。
+            </p>
+        </div>
+
+        <div class="glass-card p-6 md:p-8 rounded-2xl border border-adriatic-600/30">
+            <div id="echarts-power" class="w-full h-[420px] md:h-[480px]"></div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-6 pt-6 border-t border-adriatic-800 text-center">
+                <div class="p-3 rounded-xl bg-adriatic-950/40 border border-venetian-500/30">
+                    <span class="w-2.5 h-2.5 rounded-full bg-venetian-500 inline-block mr-1"></span>
+                    <span class="text-xs font-bold text-parchment-100">威尼斯海洋共和國</span>
+                    <p class="text-[11px] text-adriatic-300 mt-1 font-mono">1283–1797 海權壟斷</p>
+                </div>
+                <div class="p-3 rounded-xl bg-adriatic-950/40 border border-habsburg-500/30">
+                    <span class="w-2.5 h-2.5 rounded-full bg-habsburg-500 inline-block mr-1"></span>
+                    <span class="text-xs font-bold text-parchment-100">哈布斯堡 / 奧匈帝國</span>
+                    <p class="text-[11px] text-adriatic-300 mt-1 font-mono">1797–1918 鐵路與自由港</p>
+                </div>
+                <div class="p-3 rounded-xl bg-adriatic-950/40 border border-red-500/30">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-600 inline-block mr-1"></span>
+                    <span class="text-xs font-bold text-parchment-100">義大利王國 (法西斯)</span>
+                    <p class="text-[11px] text-adriatic-300 mt-1 font-mono">1920–1943 強制義大利化</p>
+                </div>
+                <div class="p-3 rounded-xl bg-adriatic-950/40 border border-blue-400/30">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block mr-1"></span>
+                    <span class="text-xs font-bold text-parchment-100">第里雅斯特自由區</span>
+                    <p class="text-[11px] text-adriatic-300 mt-1 font-mono">1947–1954 冷戰中立國</p>
+                </div>
+                <div class="p-3 rounded-xl bg-adriatic-950/40 border border-emerald-400/30">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block mr-1"></span>
+                    <span class="text-xs font-bold text-parchment-100">斯洛維尼亞 / 歐盟申根</span>
+                    <p class="text-[11px] text-adriatic-300 mt-1 font-mono">1975–現代 雙語與出海口</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Deep Dive Chapters -->
+    <section id="chapters" class="py-20 px-4 bg-adriatic-950/50">
+        <div class="max-w-6xl mx-auto space-y-16">
+            <div class="text-center">
+                <h2 class="text-xs font-cinzel tracking-widest text-habsburg-500 uppercase mb-2">CURATORIAL IN-DEPTH DISSECTION</h2>
+                <h3 class="text-3xl md:text-4xl font-bold font-title text-parchment-100">三大歷史斷層與致命爭奪</h3>
+                <div class="w-16 h-1 bg-habsburg-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <!-- Story 1 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center glass-card p-8 rounded-3xl">
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-venetian-900/60 text-venetian-500 border border-venetian-500/30 text-xs font-bold font-mono">
+                        斷層一 • 物質與霸權
+                    </div>
+                    <h4 class="text-2xl font-bold font-title text-parchment-100">塞喬夫列的「白金」與喀斯特造艦橡木</h4>
+                    <p class="text-sm font-serif text-parchment-300 leading-relaxed">
+                        威尼斯帝國的無敵艦隊，背後是這條海岸線的兩項物質支柱：
+                    </p>
+                    <ul class="text-xs text-parchment-300 space-y-2 font-serif">
+                        <li class="p-3 rounded-lg bg-adriatic-900/60 border-l-2 border-venetian-500">
+                            <strong>Petola 獨門鹽層：</strong> 塞喬夫列鹽田自 13 世紀發明「Petola」（以石膏與微藻構成的生化隔絕泥層），曬出歐洲最純淨的頂級鹽之花。威尼斯下令嚴禁私賣，違者處絞刑。
+                        </li>
+                        <li class="p-3 rounded-lg bg-adriatic-900/60 border-l-2 border-habsburg-500">
+                            <strong>造艦橡木管制：</strong> 威尼斯兵工廠在喀斯特森林瘋狂砍伐橡木作為戰艦龍骨，將海岸港口軍事化封鎖，逼得內陸奧地利哈布斯堡王朝長年沒有出海生路。
+                        </li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-7 bg-adriatic-900/70 p-6 rounded-2xl border border-adriatic-800">
+                    <div class="border-b border-adriatic-800 pb-3 mb-4 flex justify-between items-center text-xs font-mono text-adriatic-300">
+                        <span>HISTORICAL ARCHIVE: VENETIAN SALT EDICT</span>
+                        <span class="text-habsburg-500">AD 1335</span>
+                    </div>
+                    <blockquote class="font-serif italic text-parchment-200 text-sm leading-relaxed mb-4">
+                        「皮蘭與伊斯特利亞所有鹽田產出之白鹽，除維持城內生存所需之定量外，悉數封存裝船直運威尼斯水域。凡私藏一石或私渡奧地利領地者，抄沒其家產，男丁充入大帆船服終身苦役。」
+                    </blockquote>
+                    <p class="text-xs text-adriatic-300 text-right">— 威尼斯十人議會法令抄件</p>
+                </div>
+            </div>
+
+            <!-- Story 2 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center glass-card p-8 rounded-3xl">
+                <div class="lg:col-span-7 bg-adriatic-900/70 p-6 rounded-2xl border border-adriatic-800 order-2 lg:order-1">
+                    <div class="border-b border-adriatic-800 pb-3 mb-4 flex justify-between items-center text-xs font-mono text-adriatic-300">
+                        <span>COLD WAR BORDER PARTITION</span>
+                        <span class="text-red-400">1947–1975</span>
+                    </div>
+                    <blockquote class="font-serif italic text-parchment-200 text-sm leading-relaxed mb-4">
+                        「我們把行李箱綁在腳踏車上，最後看了一眼皮蘭鐘樓的石獅子。海風裡有催淚彈和火藥的味道。我們不是搬家，我們是在逃離這片祖祖輩輩生活了五百年的海岸。」
+                    </blockquote>
+                    <p class="text-xs text-adriatic-300 text-right">— 1948 年逃往第里雅斯特的流亡者日記</p>
+                </div>
+                <div class="lg:col-span-5 space-y-4 order-1 lg:order-2">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-900/60 text-red-400 border border-red-500/30 text-xs font-bold font-mono">
+                        斷層二 • 傷痕與大逃亡
+                    </div>
+                    <h4 class="text-2xl font-bold font-title text-parchment-100">天坑（Foibe）悲劇與 30 萬人大遷徙</h4>
+                    <p class="text-sm font-serif text-parchment-300 leading-relaxed">
+                        二戰末期，南斯拉夫游擊隊擊潰法西斯勢力，但在報復中引發了震驚歐洲的「喀斯特溶洞天坑屠殺（Foibe massacre）」，數千名義大利裔官員與平民遇害。
+                    </p>
+                    <p class="text-sm font-serif text-parchment-300 leading-relaxed">
+                        隨後的 1947 至 1954 年間，引發了約 30 萬義大利裔居民的大流亡（<em>Esodo giuliano-dalmata</em>）。今日沿海城鎮的雙語制度，正是這段流血衝突後，透過 1975 年《奧西莫條約》用政治代價換來的憲法級妥協。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Story 3 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center glass-card p-8 rounded-3xl">
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-habsburg-900/60 text-habsburg-500 border border-habsburg-500/30 text-xs font-bold font-mono">
+                        斷層三 • 現代特務與歐盟角力
+                    </div>
+                    <h4 class="text-2xl font-bold font-title text-parchment-100">皮蘭灣「公海走廊」與海牙監聽風暴</h4>
+                    <p class="text-sm font-serif text-parchment-300 leading-relaxed">
+                        冷戰結束後，斯洛維尼亞與克羅埃西亞為了皮蘭灣這條通往公海的窄廊大打外交戰：
+                    </p>
+                    <ul class="text-xs text-parchment-300 space-y-2 font-serif">
+                        <li class="p-3 rounded-lg bg-adriatic-900/60 border-l-2 border-habsburg-500">
+                            <strong>歐盟一票否決：</strong> 斯洛維尼亞曾利用歐盟成員國身分，直接凍結克羅埃西亞入歐談判整整一年，逼其簽署國際仲裁。
+                        </li>
+                        <li class="p-3 rounded-lg bg-adriatic-900/60 border-l-2 border-adriatic-300">
+                            <strong>情報局特務竊聽：</strong> 2015 年克羅埃西亞特務攔截並公佈斯國外交官與仲裁法官的密談電話，導致克國怒而退出常設仲裁法院，兩國巡邏艇在海灣互開數千張跨國罰單。
+                        </li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-7 bg-adriatic-900/70 p-6 rounded-2xl border border-adriatic-800">
+                    <div class="border-b border-adriatic-800 pb-3 mb-4 flex justify-between items-center text-xs font-mono text-adriatic-300">
+                        <span>THE PIRAN BAY MARITIME DISPUTE</span>
+                        <span class="text-habsburg-500">PCA THE HAGUE 2017</span>
+                    </div>
+                    <div class="space-y-3 text-xs font-serif text-parchment-300">
+                        <div class="flex items-start gap-2">
+                            <span class="px-2 py-0.5 rounded bg-blue-900 text-blue-200 shrink-0">斯洛維尼亞主張</span>
+                            <p>皮蘭灣四分之三水域為其歷史海灣，必須劃定一條寬約 2.5 海浬、直達國際公海的專屬「接合走廊（Junction Area）」。</p>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="px-2 py-0.5 rounded bg-red-900 text-red-200 shrink-0">克羅埃西亞主張</span>
+                            <p>依據《聯合國海洋法公約》等距中線原則，海灣應一人一半，斯國船隻需途經克國領海行使無害通過權。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: The Polyphonic Voices / Archives -->
+    <section id="voices" class="py-20 px-4 max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-xs font-cinzel tracking-widest text-habsburg-500 uppercase mb-2">THE VOICES IN CODE-SWITCHING</h2>
+            <h3 class="text-3xl md:text-4xl font-bold font-title text-parchment-100">多聲部檔案館：街頭與語言的活化石</h3>
+            <p class="text-sm font-serif text-parchment-300 max-w-xl mx-auto mt-2">
+                點擊下方檔案卡，聆聽同一片土地上被不同帝國塑造的聲音。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Voice 1 -->
+            <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between">
+                <div>
+                    <div class="w-10 h-10 rounded-lg bg-venetian-900/60 text-venetian-500 flex items-center justify-center mb-4">
+                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs font-mono text-venetian-500">Istro-Veneto 方言</span>
+                    <h5 class="text-lg font-bold font-title text-parchment-100 mt-1 mb-3">菜市場裡的威尼斯借詞</h5>
+                    <p class="text-xs font-serif text-parchment-300 leading-relaxed">
+                        斯拉夫文法骨架，卻塞滿威尼斯字眼：買番茄不叫 <em>paradižnik</em> 叫 <strong>pomidor</strong>，裝魚的紙袋叫 <strong>škartoc</strong>，小船叫 <strong>barka</strong>。
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-adriatic-800 text-[11px] text-adriatic-300 font-mono">
+                    #日常生活語碼轉換
+                </div>
+            </div>
+
+            <!-- Voice 2 -->
+            <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between">
+                <div>
+                    <div class="w-10 h-10 rounded-lg bg-habsburg-900/60 text-habsburg-500 flex items-center justify-center mb-4">
+                        <i data-lucide="building-2" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs font-mono text-habsburg-500">K.u.K. 奧匈海濱省</span>
+                    <h5 class="text-lg font-bold font-title text-parchment-100 mt-1 mb-3">玫瑰港（Portorož）的皇宮</h5>
+                    <p class="text-xs font-serif text-parchment-300 leading-relaxed">
+                        1910 年落成的 Palace Hotel，曾是奧匈帝國王族、作家與貴族揮金如土的海水浴場。德語、法語與義大利語在舞廳交錯。
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-adriatic-800 text-[11px] text-adriatic-300 font-mono">
+                    #維也納海洋夢
+                </div>
+            </div>
+
+            <!-- Voice 3 -->
+            <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between">
+                <div>
+                    <div class="w-10 h-10 rounded-lg bg-red-900/60 text-red-400 flex items-center justify-center mb-4">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs font-mono text-red-400">1975 奧西莫條約</span>
+                    <h5 class="text-lg font-bold font-title text-parchment-100 mt-1 mb-3">憲法雙語制的誕生</h5>
+                    <p class="text-xs font-serif text-parchment-300 leading-relaxed">
+                        所有路牌（Koper/Capodistria）、政府公文、小學教育全面雙語。即使義裔人口僅佔 3%，也保證一席國會專屬議員。
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-adriatic-800 text-[11px] text-adriatic-300 font-mono">
+                    #和平條約的制度化
+                </div>
+            </div>
+
+            <!-- Voice 4 -->
+            <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between">
+                <div>
+                    <div class="w-10 h-10 rounded-lg bg-adriatic-800 text-adriatic-300 flex items-center justify-center mb-4">
+                        <i data-lucide="ship" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs font-mono text-adriatic-300">科佩爾深水港</span>
+                    <h5 class="text-lg font-bold font-title text-parchment-100 mt-1 mb-3">中歐無海國家的心臟</h5>
+                    <p class="text-xs font-serif text-parchment-300 leading-relaxed">
+                        奧地利、匈牙利、捷克、斯洛伐克的汽車與鋼鐵，全靠這 46.6 公里的科佩爾港吞吐。它是內陸通往全球海洋的唯一閥門。
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-adriatic-800 text-[11px] text-adriatic-300 font-mono">
+                    #中歐海洋走廊
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Epilogue -->
+    <footer class="py-16 px-4 border-t border-adriatic-800 bg-adriatic-950 text-center relative overflow-hidden">
+        <div class="max-w-3xl mx-auto space-y-6">
+            <div class="w-12 h-12 rounded-full border border-habsburg-500/50 flex items-center justify-center mx-auto text-habsburg-500 bg-adriatic-900">
+                <i data-lucide="sparkles" class="w-6 h-6"></i>
+            </div>
+            <h4 class="text-2xl font-bold font-title text-parchment-100">
+                「邊界在他們身上踩踏，海風卻把他們縫合在一起。」
+            </h4>
+            <p class="text-sm font-serif text-parchment-300 leading-relaxed opacity-80">
+                這短短 46.6 公里不是一處普通的海邊，而是一座露天的歐洲地緣政治紀念碑。<br>
+                在這裡，每一塊鋪路石都是歷史的骨牌，每一朵浪花都是未竟的條約。
+            </p>
+            <div class="pt-8 border-t border-adriatic-800/60 text-xs font-mono text-adriatic-300">
+                數位策展深旅 • 極東義大利／斯洛維尼亞海岸線專題研究 • 2026
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // ----------------------------------------------------
+        // Era Data Configuration
+        // ----------------------------------------------------
+        const eras = [
+            {
+                years: "公元 500 – 1000 年",
+                tag: "ROMAN & BYZANTINE",
+                title: "羅馬崩潰與拜占庭海上前哨",
+                desc: "蠻族踏平內陸城市，羅馬遺民退守海灣孤島。拜占庭皇帝查士丁尼二世將科佩爾命名為 Justinopolis（查士丁尼之城），修築堅固要塞抵禦蠻族南下；內陸斯拉夫人開始在此定居。",
+                bullets: [
+                    "科佩爾（Justinopolis）與皮蘭作為避難海島堡壘誕生",
+                    "拉丁海洋文明與內陸斯拉夫早期部落形成分水嶺"
+                ],
+                center: [45.548, 13.730],
+                zoom: 11,
+                overlayType: "byzantine"
+            },
+            {
+                years: "1283 – 1797 年",
+                tag: "VENETIAN EMPIRE",
+                title: "威尼斯海洋共和國的海鎖殖民",
+                desc: "威尼斯全面征服伊斯特利亞海岸，長達 500 年。壟斷塞喬夫列古法鹽田產量，嚴禁私賣給奧地利；軍管喀斯特橡木森林以供應威尼斯戰艦兵工廠，內陸哈布斯堡王朝被死死封鎖。",
+                bullets: [
+                    "皮蘭、科佩爾、伊佐拉全面威尼斯化（飛獅石雕與哥德宮殿）",
+                    "塞喬夫列 700 年 Petola 鹽田專利工法誕生，白金稅收支撐威尼斯",
+                    "奧地利哈布斯堡王朝受困內陸，零出海口"
+                ],
+                center: [45.525, 13.650],
+                zoom: 11,
+                overlayType: "venice"
+            },
+            {
+                years: "1797 – 1918 年",
+                tag: "AUSTRO-HUNGARIAN",
+                title: "奧匈帝國「海濱省」與海洋現代化",
+                desc: "拿破崙滅亡威尼斯後，哈布斯堡王朝將此地併入『奧地利海濱省』。維也納修建南方鐵路直達第里雅斯特與波爾托羅日，將這裡打造成全歐洲最繁華的自由港與貴族療養勝地。",
+                bullets: [
+                    "第里雅斯特（Trieste）崛起為中歐最大自由港，維也納直通鐵路完工",
+                    "波爾托羅日（Portorož）興建 Palace Hotel，成為奧匈貴族度假天堂",
+                    "德語、義大利語、斯洛維尼亞語三語共存體系"
+                ],
+                center: [45.580, 13.780],
+                zoom: 11,
+                overlayType: "habsburg"
+            },
+            {
+                years: "1920 – 1943 年",
+                tag: "FASCIST ITALY",
+                title: "義大利王國與強制義大利化",
+                desc: "一戰後奧匈帝國瓦解，《拉帕洛條約》將整個伊斯特利亞劃給義大利。墨索里尼法西斯政權展開殘酷的強制同化：禁止講斯洛維尼亞語、強改斯拉夫姓氏、鑿毀墓碑。",
+                bullets: [
+                    "全面取締斯洛維尼亞語學校與報刊，激起地下抵抗運動（TIGR）",
+                    "地名與姓氏強制義大利化（Novak 改為 Novati）",
+                    "累積了二次大戰後激烈的種族報復火種"
+                ],
+                center: [45.548, 13.730],
+                zoom: 11,
+                overlayType: "italy"
+            },
+            {
+                years: "1947 – 1954 年",
+                tag: "FREE TERRITORY OF TRIESTE",
+                title: "冷戰前哨：第里雅斯特自由區 A/B 分治",
+                desc: "二戰後天坑屠殺引發 30 萬義大利人大遷徙。聯合國設立自由區：A 區由英美軍管（第里雅斯特），B 區由南斯拉夫軍管（斯洛維尼亞 46 公里海岸）。1954 年倫敦備忘錄實質瓜分此地。",
+                bullets: [
+                    "A 區（英美軍管）vs B 區（狄托南斯拉夫軍管）重兵對峙",
+                    "斯洛維尼亞由此獲得這 46.6 公里唯一的出海窗口",
+                    "Esodo 大遷徙：數十萬義裔居民攜家帶眷逃往義大利本土"
+                ],
+                center: [45.560, 13.710],
+                zoom: 11,
+                overlayType: "ftt"
+            },
+            {
+                years: "1975 – 現代",
+                tag: "OSIMO & SCHENGEN",
+                title: "《奧西莫條約》確立國界與申根融化",
+                desc: "1975 年義南簽訂《奧西莫條約》永久確立國界。1991 年斯洛維尼亞獨立，並於 2007 年拆除邊境檢查哨加入申根區。皮蘭灣海界與直通公海走廊成為兩國最後的法律角力場。",
+                bullets: [
+                    "科佩爾港躍升為中歐無海國家（奧地利/匈牙利/捷克）最重要的第一大港",
+                    "三市鎮（科佩爾/皮蘭/伊佐拉）實施全面憲法級義斯雙語制度",
+                    "皮蘭灣國際常設仲裁法庭裁決與跨國漁業爭端"
+                ],
+                center: [45.525, 13.600],
+                zoom: 11,
+                overlayType: "modern"
+            }
+        ];
+
+        // ----------------------------------------------------
+        // Leaflet Map Initialization
+        // ----------------------------------------------------
+        const map = L.map('map', {
+            zoomControl: true,
+            scrollWheelZoom: false
+        }).setView([45.548, 13.730], 11);
+
+        // Dark-themed OpenStreetMap tiles (CartoDB DarkMatter)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
+            maxZoom: 18
+        }).addTo(map);
+
+        // Landmarks Database
+        const landmarks = [
+            {
+                name: "科佩爾 (Koper / Capodistria)",
+                coords: [45.5481, 13.7302],
+                tag: "拜占庭堡壘 • 威尼斯總督宮 • 斯國唯一深水港",
+                desc: "古名 Justinopolis。威尼斯時代為伊斯特利亞首府，設有總督宮（Pretorian Palace）。今日為斯洛維尼亞對外吞吐 2000 萬噸貨物的國脈心臟。"
+            },
+            {
+                name: "皮蘭 (Piran / Pirano)",
+                coords: [45.5283, 13.5684],
+                tag: "水上小威尼斯 • 聖馬可飛獅 • 塔蒂尼廣場",
+                desc: "三面環海的中世紀奇蹟。全鎮完整保留威尼斯哥德式建築，以小提琴大師塔蒂尼命名廣場，鐘樓為威尼斯聖馬可鐘樓的縮小復刻版。"
+            },
+            {
+                name: "伊佐拉 (Izola / Isola)",
+                coords: [45.5397, 13.6594],
+                tag: "孤島漁港 • 造船廠 • 雙語古鎮",
+                desc: "原為一座獨立海島，19 世紀拆除城牆填海連陸。曾是威尼斯海軍重要的捕魚與補給港。"
+            },
+            {
+                name: "波爾托羅日 (Portorož / Portorose)",
+                coords: [45.5147, 13.5892],
+                tag: "玫瑰港 • 奧匈帝國皇宮大酒店 • 貴族溫泉浴場",
+                desc: "19 世紀末被奧匈帝國打造成維也納貴族避寒與博弈勝地，坐擁百年 Palace Hotel 與頂級海水水療中心。"
+            },
+            {
+                name: "塞喬夫列鹽田 (Sečovlje Salina)",
+                coords: [45.4858, 13.6062],
+                tag: "700年古法 Petola 泥層 • 威尼斯白金稅源 • 濕地生態",
+                desc: "歐洲最古老仍在運作的手工日曬鹽田之一。特殊的微藻生化保護層產出極度純淨的鹽之花，曾是威尼斯共和國重點軍管的戰略物資。"
+            },
+            {
+                name: "第里雅斯特 (Trieste / Trst)",
+                coords: [45.6495, 13.7768],
+                tag: "奧匈帝國自由港 • 冷戰 A 區中心 • 義斯文化裂隙",
+                desc: "哈布斯堡王朝開創的偉大港市，1947–1954 年為自由區 A 區首府。今日為極東義大利的核心文化地標。"
+            }
+        ];
+
+        // Layer group for markers & polygons
+        let activeLayers = L.layerGroup().addTo(map);
+
+        // Custom Marker Icon
+        const createCustomIcon = (color) => {
+            return L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background-color: ${color}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #f5f0e6; box-shadow: 0 0 10px ${color};"></div>`,
+                iconSize: [14, 14],
+                iconAnchor: [7, 7]
+            });
+        };
+
+        function renderEraMap(index) {
+            activeLayers.clearLayers();
+            const era = eras[index];
+
+            // Render Markers
+            landmarks.forEach(lm => {
+                let color = '#d4af37';
+                if (index === 1) color = '#b83b26'; // Venice Red
+                if (index === 2) color = '#d4af37'; // Habsburg Gold
+                if (index === 4) color = '#237a9b'; // Cold war Blue
+                if (index === 5) color = '#10b981'; // Modern Green
+
+                const marker = L.marker(lm.coords, { icon: createCustomIcon(color) });
+                marker.bindPopup(`
+                    <div class="p-2 space-y-1">
+                        <span class="text-xs font-mono text-habsburg-500 font-bold uppercase">${lm.tag}</span>
+                        <h5 class="text-base font-bold font-title text-parchment-100">${lm.name}</h5>
+                        <p class="text-xs text-parchment-300 font-serif leading-relaxed">${lm.desc}</p>
+                    </div>
+                `);
+                activeLayers.addLayer(marker);
+            });
+
+            // Era Specific Overlays (Illustrative border polygons)
+            if (index === 4) { // Cold War FTT A & B zones
+                // Zone A (Trieste - Anglo-American)
+                const zoneA = L.polygon([
+                    [45.68, 13.70], [45.65, 13.84], [45.58, 13.80], [45.59, 13.72]
+                ], { color: '#38bdf8', weight: 2, fillColor: '#38bdf8', fillOpacity: 0.25 }).bindTooltip("第里雅斯特自由區 • A 區 (英美軍管)", { permanent: true, direction: "center", className: "bg-transparent text-sky-300 text-xs font-mono border-0" });
+                
+                // Zone B (Koper/Piran/Istria - Yugoslav)
+                const zoneB = L.polygon([
+                    [45.59, 13.72], [45.58, 13.80], [45.45, 13.75], [45.44, 13.50], [45.53, 13.54]
+                ], { color: '#ef4444', weight: 2, fillColor: '#ef4444', fillOpacity: 0.25 }).bindTooltip("第里雅斯特自由區 • B 區 (南斯拉夫軍管)", { permanent: true, direction: "center", className: "bg-transparent text-red-300 text-xs font-mono border-0" });
+
+                activeLayers.addLayer(zoneA);
+                activeLayers.addLayer(zoneB);
+            } else if (index === 5) { // Modern Piran Bay Corridor
+                const piranCorridor = L.polygon([
+                    [45.51, 13.55], [45.53, 13.48], [45.57, 13.46], [45.55, 13.57]
+                ], { color: '#10b981', weight: 2, dashArray: '4, 4', fillColor: '#10b981', fillOpacity: 0.2 }).bindTooltip("皮蘭灣公海接合走廊 (PCA 裁定)", { permanent: true, direction: "center", className: "bg-transparent text-emerald-300 text-xs font-mono border-0" });
+                activeLayers.addLayer(piranCorridor);
+            }
+
+            map.flyTo(era.center, era.zoom, { duration: 1.2 });
+        }
+
+        function switchEra(index) {
+            // Update buttons styling
+            document.querySelectorAll('.era-btn').forEach((btn, i) => {
+                if (i === index) {
+                    btn.classList.remove('bg-adriatic-900/40', 'border-adriatic-800', 'text-parchment-300');
+                    btn.classList.add('bg-adriatic-900/90', 'border-habsburg-500', 'text-habsburg-500', 'shadow-lg');
+                } else {
+                    btn.classList.remove('bg-adriatic-900/90', 'border-habsburg-500', 'text-habsburg-500', 'shadow-lg');
+                    btn.classList.add('bg-adriatic-900/40', 'border-adriatic-800', 'text-parchment-300');
+                }
+            });
+
+            // Update Explanatory Card
+            const era = eras[index];
+            document.getElementById('era-card-years').innerText = era.years;
+            document.getElementById('era-card-tag').innerText = era.tag;
+            document.getElementById('era-card-title').innerText = era.title;
+            document.getElementById('era-card-desc').innerHTML = era.desc;
+
+            const bulletsContainer = document.getElementById('era-card-bullets');
+            bulletsContainer.innerHTML = era.bullets.map(b => `
+                <li class="flex items-start gap-2">
+                    <i data-lucide="check" class="w-3.5 h-3.5 text-habsburg-500 mt-0.5 shrink-0"></i>
+                    <span>${b}</span>
+                </li>
+            `).join('');
+            lucide.createIcons();
+
+            // Render Map
+            renderEraMap(index);
+        }
+
+        // Initialize first era
+        renderEraMap(0);
+
+        // ----------------------------------------------------
+        // ECharts Power Dynamics Stacked Area Chart
+        // ----------------------------------------------------
+        const chartDom = document.getElementById('echarts-power');
+        const myChart = echarts.init(chartDom, null, { renderer: 'svg' });
+
+        const powerOption = {
+            backgroundColor: 'transparent',
+            tooltip: {
+                trigger: 'axis',
+                backgroundColor: 'rgba(12, 46, 61, 0.95)',
+                borderColor: '#d4af37',
+                borderWidth: 1,
+                textStyle: { color: '#f5f0e6', fontFamily: 'Noto Sans TC' },
+                axisPointer: {
+                    type: 'cross',
+                    label: { backgroundColor: '#237a9b' }
+                }
+            },
+            legend: {
+                data: ['拜占庭 / 羅馬基石', '威尼斯海洋共和國', '奧地利哈布斯堡 / 奧匈', '義大利王國 (法西斯)', '南斯拉夫 / 斯洛維尼亞'],
+                textStyle: { color: '#dfd0b5', fontSize: 11 },
+                top: '0%'
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '8%',
+                top: '12%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['500年', '800年', '1100年', '1283年', '1400年', '1550年', '1719年', '1797年', '1867年', '1918年', '1945年', '1954年', '1975年', '1991年', '2026年'],
+                    axisLine: { lineStyle: { color: '#237a9b' } },
+                    axisLabel: { color: '#90cbdf', fontSize: 11 }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '勢力主導指數 (%)',
+                    nameTextStyle: { color: '#90cbdf', fontSize: 11 },
+                    max: 100,
+                    axisLine: { lineStyle: { color: '#237a9b' } },
+                    axisLabel: { color: '#90cbdf' },
+                    splitLine: { lineStyle: { color: 'rgba(35, 122, 155, 0.15)' } }
+                }
+            ],
+            series: [
+                {
+                    name: '拜占庭 / 羅馬基石',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: { width: 1.5, color: '#f59e0b' },
+                    areaStyle: { opacity: 0.6, color: '#f59e0b' },
+                    emphasis: { focus: 'series' },
+                    data: [85, 70, 40, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                },
+                {
+                    name: '威尼斯海洋共和國',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: { width: 1.5, color: '#b83b26' },
+                    areaStyle: { opacity: 0.75, color: '#b83b26' },
+                    emphasis: { focus: 'series' },
+                    data: [15, 20, 50, 80, 85, 80, 50, 10, 0, 0, 0, 0, 0, 0, 0]
+                },
+                {
+                    name: '奧地利哈布斯堡 / 奧匈',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: { width: 1.5, color: '#d4af37' },
+                    areaStyle: { opacity: 0.7, color: '#d4af37' },
+                    emphasis: { focus: 'series' },
+                    data: [0, 10, 10, 10, 15, 20, 50, 90, 100, 40, 0, 0, 0, 0, 0]
+                },
+                {
+                    name: '義大利王國 (法西斯)',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: { width: 1.5, color: '#dc2626' },
+                    areaStyle: { opacity: 0.7, color: '#dc2626' },
+                    emphasis: { focus: 'series' },
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 20, 10, 5, 0, 0]
+                },
+                {
+                    name: '南斯拉夫 / 斯洛維尼亞',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    lineStyle: { width: 1.5, color: '#10b981' },
+                    areaStyle: { opacity: 0.8, color: '#10b981' },
+                    emphasis: { focus: 'series' },
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 80, 90, 95, 100, 100]
+                }
+            ]
+        };
+
+        myChart.setOption(powerOption);
+        window.addEventListener('resize', () => myChart.resize());
+
+        // ----------------------------------------------------
+        // Web Audio API Ambient Wave Sound Generator
+        // ----------------------------------------------------
+        let audioCtx = null;
+        let isAudioPlaying = false;
+        let noiseNode = null;
+        let gainNode = null;
+
+        document.getElementById('ambient-audio-btn').addEventListener('click', () => {
+            if (!isAudioPlaying) {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    
+                    // Buffer for brown noise (waves simulator)
+                    const bufferSize = audioCtx.sampleRate * 2;
+                    const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                    const output = noiseBuffer.getChannelData(0);
+                    let lastOut = 0.0;
+                    for (let i = 0; i < bufferSize; i++) {
+                        const white = Math.random() * 2 - 1;
+                        output[i] = (lastOut + (0.02 * white)) / 1.02;
+                        lastOut = output[i];
+                        output[i] *= 3.5;
+                    }
+
+                    noiseNode = audioCtx.createBufferSource();
+                    noiseNode.buffer = noiseBuffer;
+                    noiseNode.loop = true;
+
+                    // Filter to shape gentle waves
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(350, audioCtx.currentTime);
+
+                    // LFO for wave swelling
+                    const lfo = audioCtx.createOscillator();
+                    lfo.frequency.setValueAtTime(0.12, audioCtx.currentTime); // Wave period ~8s
+                    const lfoGain = audioCtx.createGain();
+                    lfoGain.gain.setValueAtTime(200, audioCtx.currentTime);
+                    lfo.connect(filter.frequency);
+                    lfo.start();
+
+                    gainNode = audioCtx.createGain();
+                    gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+
+                    noiseNode.connect(filter);
+                    filter.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    noiseNode.start();
+                } else {
+                    audioCtx.resume();
+                }
+                
+                isAudioPlaying = true;
+                document.getElementById('audio-status').innerText = '播放海潮中';
+                document.getElementById('audio-icon').classList.add('text-habsburg-500', 'animate-pulse');
+            } else {
+                audioCtx.suspend();
+                isAudioPlaying = false;
+                document.getElementById('audio-status').innerText = '海潮氛圍音';
+                document.getElementById('audio-icon').classList.remove('text-habsburg-500', 'animate-pulse');
+            }
+        });
+    </script>
+</body>
+</html>
